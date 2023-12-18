@@ -2,6 +2,8 @@ using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var allowedOrigins = "_allowedOrigins";
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -15,7 +17,16 @@ builder.Services.AddControllers()
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
     .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
+
+// Configure custom CORS policy Whitelisted host
+builder.Services.AddCors(options => {
+    options.AddPolicy(name: allowedOrigins, policy => {
+        policy.WithOrigins("http://localhost.com");
+    });
+});
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {
@@ -24,6 +35,9 @@ if (app.Environment.IsDevelopment()) {
 }
 
 app.UseAuthorization();
+
+// Enable CORS
+app.UseCors(allowedOrigins);
 
 app.MapControllers();
 
