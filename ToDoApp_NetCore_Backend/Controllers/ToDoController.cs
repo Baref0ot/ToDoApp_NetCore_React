@@ -69,7 +69,34 @@ namespace ToDoApp_NetCore_Backend.Controllers {
         }// end AddNote
 
 
+        [HttpDelete]
+        [Route("DeleteNote")]
+        public JsonResult DeleteNote([FromForm] int id) {
 
+            string query = "delete from dbo.notes where id = @id";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ToDoDBCon");
+
+            SqlDataReader myReader;
+            using (SqlConnection myconnection = new SqlConnection(sqlDataSource)) {
+                myconnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand(query, myconnection)) {
+
+                    sqlCommand.Parameters.AddWithValue("@id", id);
+
+                    myReader = sqlCommand.ExecuteReader();
+                    table.Load(myReader);
+
+                    myReader.Close();
+                    myconnection.Close();
+
+
+                }
+            }
+
+            return new JsonResult("Note Deleted Successfully.");
+        }// end DeleteNote
 
 
         public IActionResult Index() {
