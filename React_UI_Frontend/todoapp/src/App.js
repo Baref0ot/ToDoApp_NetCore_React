@@ -29,7 +29,24 @@ class App extends Component{
     .then(data => {
       this.setState({notes:data});
     })
-  }
+  }// end refreshNotes
+
+
+  async addNote(){
+      var newNoteInput = document.getElementById("newNotes").value;
+      const data = new FormData();
+      data.append("newNote",newNoteInput);
+
+      fetch(this.API_URL+"AddNote", {
+        method: "POST",
+        body: data
+      })
+      .then(response => response.json())
+      .then((result)=> {
+        alert(result);
+        this.refreshNotes()
+      })
+  }// end AddNote
 
 
  render() {
@@ -43,7 +60,7 @@ class App extends Component{
       {notes.map(note =>
         <p>
           <b>* {note.description}</b>&nbsp;
-          <button onClick={() => this.deleteNote()} type="button"> Delete Note </button>
+          <button onClick={() => this.deleteNote(note.id)} type="button"> Delete Note </button>
         </p>)}
     </div>
   );
