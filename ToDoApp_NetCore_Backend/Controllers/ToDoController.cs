@@ -17,13 +17,25 @@ namespace ToDoApp_NetCore_Backend.Controllers {
         public JsonResult GetNotes() {
 
             string query = "select * from dbo.notes";
-            DataTable dataTable = new DataTable();
+            DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ToDoDBCon");
 
             SqlDataReader myReader;
+            using (SqlConnection myconnection = new SqlConnection(sqlDataSource)) {
+                myconnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand(query, myconnection)) {
+                    myReader = sqlCommand.ExecuteReader();
+                    table.Load(myReader);
+
+                    myReader.Close();
+                    myconnection.Close();
 
 
-            return Json();
+                }
+            }
+
+                return new JsonResult(table);
         }
 
         public IActionResult Index() {
