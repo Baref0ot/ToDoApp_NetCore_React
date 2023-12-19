@@ -38,9 +38,12 @@ class App extends Component{
   return (
     <div className="App">
       <h2>To Do App</h2>
+      <input id="newNotes" />&nbsp;
+      <button onClick={() => this.addNote()} type="button"> Add Note </button>
       {notes.map(note =>
         <p>
-          <b>* {note.description}</b>
+          <b>* {note.description}</b>&nbsp;
+          <button onClick={() => this.deleteNote()} type="button"> Delete Note </button>
         </p>)}
     </div>
   );
