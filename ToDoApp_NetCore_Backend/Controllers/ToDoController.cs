@@ -36,7 +36,41 @@ namespace ToDoApp_NetCore_Backend.Controllers {
             }
 
                 return new JsonResult(table);
-        }
+        }// end GetNotes
+
+
+        [HttpPost]
+        [Route("AddNote")]
+        public JsonResult AddNote([FromForm] string newNote) {
+
+            string query = "insert into dbo.notes values(@newNote)";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("ToDoDBCon");
+
+            SqlDataReader myReader;
+            using (SqlConnection myconnection = new SqlConnection(sqlDataSource)) {
+                myconnection.Open();
+
+                using (SqlCommand sqlCommand = new SqlCommand(query, myconnection)) {
+
+                    sqlCommand.Parameters.AddWithValue("@newNote", newNote);
+
+                    myReader = sqlCommand.ExecuteReader();
+                    table.Load(myReader);
+
+                    myReader.Close();
+                    myconnection.Close();
+
+
+                }
+            }
+
+            return new JsonResult("New Note Added Successfully.");
+        }// end AddNote
+
+
+
+
 
         public IActionResult Index() {
             return View();
