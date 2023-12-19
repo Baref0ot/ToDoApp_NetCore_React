@@ -44,9 +44,25 @@ class App extends Component{
       .then(response => response.json())
       .then((result)=> {
         alert(result);
-        this.refreshNotes()
+        this.refreshNotes();
       })
-  }// end AddNote
+  }// end addNote
+
+
+  async deleteNote(id){
+      const data = new FormData();
+      data.append("id",id);
+
+      fetch(this.API_URL+"DeleteNote", {
+      method: "DELETE",
+      body: data
+    })
+    .then(response => response.json())
+    .then((result)=> {
+      alert(result);
+      this.refreshNotes();
+    })
+}// end deleteNote
 
 
  render() {

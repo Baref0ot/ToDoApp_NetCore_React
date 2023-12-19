@@ -21,7 +21,7 @@ builder.Services.AddControllers()
 // Configure custom CORS policy Whitelisted host
 builder.Services.AddCors(options => {
     options.AddPolicy(name: allowedOrigins, policy => {
-        policy.WithOrigins("http://localhost:3000/").AllowAnyOrigin();
+        policy.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
     });
 });
 
