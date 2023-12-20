@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { Component } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component{
 
@@ -69,15 +70,44 @@ class App extends Component{
   const{notes}=this.state;
 
   return (
-    <div className="App">
-      <h2>To Do App</h2>
-      <input id="newNotes" />&nbsp;
-      <button onClick={() => this.addNote()} type="button"> Add Note </button>
-      {notes.map(note =>
-        <p>
-          <b>* {note.description}</b>&nbsp;
-          <button onClick={() => this.deleteNote(note.id)} type="button"> Delete Note </button>
-        </p>)}
+    <div class='container'>
+      
+      <div className='App'>
+        <h2>To Do App</h2>
+        <div class='card'>
+        <ul class="list-group">
+          {notes.map(note =>
+          <li class="list-group-item">
+            <div class='row'>              
+                <div class='col-sm-9 d-flex justify-content-start'>
+                  <b> {note.description} </b>
+                </div>
+                <div class='col-sm-3'>
+                  <button onClick={() => this.deleteNote(note.id)} type="button" class="btn btn-danger"> Delete Note </button>       
+                </div>           
+            </div>
+          </li>
+          
+          )}
+          </ul>
+        &nbsp;
+        <div class='row'> 
+          <div class='col-sm-3'></div>
+
+            <div class='col-sm-6'>           
+            <div class='input-group mb-3'> 
+              <input class="form-control" id='newNotes' aria-describedby="basic-addon2" placeholder='Add a new note...'/> 
+              <div class="input-group-append">
+                <button onClick={() => this.addNote()} type='button' class='btn btn-success'> Add Note </button>    
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class='col-sm-3'></div>
+
+      </div>
+      </div>
     </div>
   );
 }
